@@ -1,0 +1,38 @@
+[gd_scene load_steps=2 format=3 uid="uid://bsqaivv8nytfa"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fvcpe"]
+size = Vector2(382, 20)
+
+[node name="Mod" type="Control"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 382.0
+offset_bottom = 20.0
+
+[node name="ModName" type="Label" parent="."]
+layout_mode = 0
+offset_right = 204.0
+offset_bottom = 23.0
+text = "test"
+
+[node name="ModCategory" type="Label" parent="."]
+layout_mode = 0
+offset_left = 205.0
+offset_right = 342.0
+offset_bottom = 23.0
+text = "shoes"
+
+[node name="ModToggle" type="CheckButton" parent="."]
+layout_mode = 0
+offset_left = 342.0
+offset_right = 386.0
+offset_bottom = 24.0
+scale = Vector2(0.915418, 0.915418)
+button_pressed = true
+
+[node name="ClickFix" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ClickFix"]
+position = Vector2(191, 10)
+shape = SubResource("RectangleShape2D_fvcpe")

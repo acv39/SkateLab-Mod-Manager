@@ -1,0 +1,91 @@
+[gd_scene load_steps=6 format=3 uid="uid://cunc4o5epnpkr"]
+
+[ext_resource type="Script" path="res://Scripts/main.gd" id="1_xyjh2"]
+[ext_resource type="Texture2D" uid="uid://m6ovkecaw3aq" path="res://Assets/HomeIco.png" id="2_pj1od"]
+[ext_resource type="Texture2D" uid="uid://5ndpy54bgfyl" path="res://Assets/FIlesIco.png" id="3_q444w"]
+[ext_resource type="Texture2D" uid="uid://b7syy5ksit032" path="res://Assets/FileIco2.png" id="4_3vhqj"]
+[ext_resource type="LabelSettings" uid="uid://bt8ybbniuvfld" path="res://Other/Font.tres" id="5_1rs6q"]
+
+[node name="Main" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 2.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xyjh2")
+metadata/_edit_use_anchors_ = true
+
+[node name="FileDialog" type="FileDialog" parent="."]
+title = "Open a File"
+initial_position = 1
+size = Vector2i(546, 390)
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+show_hidden_files = true
+use_native_dialog = true
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 2
+offset_right = 1025.0
+offset_bottom = 769.0
+color = Color(0.254343, 0.254343, 0.254343, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+layout_mode = 2
+offset_right = 88.0
+offset_bottom = 768.0
+color = Color(0.136751, 0.136751, 0.136751, 1)
+
+[node name="Home" type="Button" parent="."]
+layout_mode = 2
+offset_right = 74.0
+offset_bottom = 74.0
+icon = ExtResource("2_pj1od")
+expand_icon = true
+
+[node name="Files" type="Button" parent="."]
+layout_mode = 2
+offset_top = 92.0
+offset_right = 74.0
+offset_bottom = 166.0
+icon = ExtResource("3_q444w")
+expand_icon = true
+
+[node name="GameDir" type="Button" parent="."]
+layout_mode = 2
+offset_left = 145.0
+offset_top = 4.0
+offset_right = 219.0
+offset_bottom = 78.0
+icon = ExtResource("4_3vhqj")
+expand_icon = true
+
+[node name="Game Dir" type="TextEdit" parent="."]
+layout_mode = 0
+offset_left = 235.0
+offset_top = 20.0
+offset_right = 940.0
+offset_bottom = 56.0
+placeholder_text = "SkateLab Game Dir"
+
+[node name="AcceptDialog" type="AcceptDialog" parent="."]
+title = "Please Set Game Directory"
+position = Vector2i(10, 120)
+size = Vector2i(312, 100)
+dialog_text = "Make Sure To Set The Game Directory!"
+
+[node name="Notification" type="Label" parent="."]
+layout_mode = 0
+offset_left = 98.0
+offset_top = 733.0
+offset_right = 281.0
+offset_bottom = 756.0
+label_settings = ExtResource("5_1rs6q")
+
+[connection signal="file_selected" from="FileDialog" to="." method="_on_file_dialog_file_selected"]
+[connection signal="pressed" from="Files" to="." method="_on_files_pressed"]
+[connection signal="pressed" from="GameDir" to="." method="_on_game_dir_pressed"]

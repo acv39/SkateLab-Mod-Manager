@@ -1,0 +1,15 @@
+Window
+ConfirmationDialog
+AcceptDialog
+ColorRect
+Area2D
+CollisionShape2D
+Label
+SubViewport
+SubViewportContainer
+Camera3D
+Node
+VBoxContainer
+HBoxContainer
+CheckButton
+Control
