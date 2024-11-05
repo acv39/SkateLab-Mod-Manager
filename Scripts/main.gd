@@ -66,15 +66,17 @@ func _on_files_dropped(files):
 		print("not mod scene, this to prevent crash")	
 
 func _on_import_pressed() -> void:
-	get_tree().reload_current_scene()
 	if autoload.moddir.get_extension() == "pak":
 		pak(autoload.moddir)
 		createnodes()
+		get_tree().reload_current_scene()
 	elif autoload.moddir.get_extension() == "zip":
 		unzip(autoload.moddir)
 		createnodes()
+		get_tree().reload_current_scene()
 	else:
 		print("Not A Valid File Type")
+	
 #change scenes
 func _on_files_pressed() -> void:
 	if autoload.isgamedirset == true:
@@ -95,12 +97,11 @@ func pak(pakpath:String):
 	var writeto = data+newfolder+"\\"
 	diraccess.make_dir(data+newfolder)
 	DirAccess.copy_absolute(pakpath,writeto+newfolder+"_P.pak")
-	storevalue(newfolder,newfolder,null,"Pak Import, No Description",writeto+newfolder+"_P.pak","Misc")
+	storevalue(newfolder,newfolder,null,"Pak Import, No Description",writeto+newfolder+"_P.pak","Misc",true)
 	save_data()
 
 func createnodes():#modname,modcategory,moddescription,modpath,modimage):
 	for loadedmods in autoload.loadmods:
-		print(loadedmods)
 		var modnodeinstance = autoload.ModNode.instantiate()
 		modnodeinstance.name = str(autoload.loadmods[loadedmods]["ModName"])
 		if mods_list.get_child_count() >= autoload.loadmods.size():
@@ -120,17 +121,29 @@ func createnodes():#modname,modcategory,moddescription,modpath,modimage):
 				if event is InputEventMouseButton:
 					if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 						autoload.selectedmod = autoload.loadmods[loadedmods]
-						#Preview IMG Stuff
-						var image = Image.new()
-						var texture = image.load(autoload.loadmods[loadedmods]["ModPreviewPath"])
-						var imagetexture = ImageTexture.new()
-						imagetexture.set_image(image)
-						$Preview/Control/TextureRect.texture = imagetexture
-						#Description stuff
+						if autoload.loadmods[loadedmods].has("ModPreview2d") == false or autoload.loadmods[loadedmods]["ModPreview2d"] == true:
+							$"Preview/Control/3DPreviewContainer".hide()
+							#Preview IMG Stuff
+							var image = Image.new()
+							var texture = image.load(autoload.loadmods[loadedmods]["ModPreviewPath"])
+							var imagetexture = ImageTexture.new()
+							imagetexture.set_image(image)
+							$Preview/Control/TextureRect.texture = imagetexture
+							
+						else:
+							$"Preview/Control/3DPreviewContainer".show()
+							var image = Image.new()
+							var texture = image.load(autoload.loadmods[loadedmods]["ModPreviewPath"])
+							var imagetexture = ImageTexture.new()
+							imagetexture.set_image(image)
+							var mesh = $"Preview/Control/3DPreviewContainer/SubViewport/3D Preview/SkateLab SDK/Armature/Skeleton3D/Deck"	
+							var material_one = mesh.get_active_material(0)
+							material_one.albedo_texture = imagetexture
+							mesh.set_surface_override_material(0, material_one)
 						$Preview/Control/RichTextLabel.text = autoload.loadmods[loadedmods]["ModDescription"]
 				)
 
-func storevalue(foldername,modname,modimagepath,moddescription,modpath,modcategory):
+func storevalue(foldername,modname,modimagepath,moddescription,modpath,modcategory,modpreview2d):
 	autoload.loadmods[foldername] = {}
 	autoload.loadmods[foldername]["ModName"] = str(modname)
 	autoload.loadmods[foldername]["ModDescription"] = str(moddescription)
@@ -140,6 +153,7 @@ func storevalue(foldername,modname,modimagepath,moddescription,modpath,modcatego
 	autoload.loadmods[foldername]["ModLoadedInGameFiles"] = false
 	autoload.loadmods[foldername]["Toggled"] = true
 	autoload.loadmods[foldername]["FolderName"] = str(foldername)
+	autoload.loadmods[foldername]["ModPreview2d"] = modpreview2d
 func unzip(zippath:String):
 	var zipreader = ZIPReader.new()
 	var newfolder = zippath.get_file()
@@ -151,6 +165,7 @@ func unzip(zippath:String):
 	var foldername = ""
 	var moddescription = "Set A Description"
 	var modcategory = "Misc"
+	var modpreview2d = true
 	if zipreader.open(zippath) == OK:
 		for filepath in zipreader.get_files():
 			var zipextractloc :String = autoload.modmanagerstoragedir #this is stored in game files
@@ -180,9 +195,11 @@ func unzip(zippath:String):
 			modname = modset[0]
 			moddescription = modset[1]
 			modcategory = modset[2]
+			if modset.size() >= 3:
+				modpreview2d = modset[3]
 		else:
 			print("No Mod Settings Found In Zip.")
-	storevalue(foldername,modname,modimagepath,moddescription,pakpath,modcategory)
+	storevalue(foldername,modname,modimagepath,moddescription,pakpath,modcategory,modpreview2d)
 	save_data()
 
 const save_file_path = "user://SkateLab-Mod-Manager.dat"
