@@ -195,8 +195,10 @@ func unzip(zippath:String):
 			modname = modset[0]
 			moddescription = modset[1]
 			modcategory = modset[2]
-			if modset.size() >= 3:
+			if modset.size() >= 4:
 				modpreview2d = modset[3]
+			else:
+				print("not found")
 		else:
 			print("No Mod Settings Found In Zip.")
 	storevalue(foldername,modname,modimagepath,moddescription,pakpath,modcategory,modpreview2d)
