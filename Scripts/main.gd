@@ -237,7 +237,7 @@ func load_data():
 		print(autoload.gamedir)
 
 func _on_start_game_pressed() -> void: #launch game from game directory path
-	OS.execute(autoload.gamedir, [])
+	OS.shell_open("steam://launch/2983940")
 
 func _on_load_mods_pressed() -> void:
 	var modpath :String = autoload.modsfolderdir
