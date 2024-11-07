@@ -1,6 +1,6 @@
 ea4bc82a6ad023ab7ee23ee620429895
-::res://::1730936635
-export_presets.cfg::TextFile::-1::1730771552::0::1::::<><>::
+::res://::1731019554
+export_presets.cfg::TextFile::-1::1730939687::0::1::::<><>::
 icon.svg::CompressedTexture2D::1893544354564563054::1729983708::1730661577::1::::<><>::
 README.md::TextFile::-1::1730761127::0::1::::<><>::
 ::res://Assets/::1730761815
@@ -12,12 +12,11 @@ Roboto-Bold.ttf::FontFile::3150350703521243310::1729984524::1730661576::1::::<><
 Splash.png::CompressedTexture2D::6985292173861988596::1729985023::1730661577::1::::<><>::
 ::res://Assets/SkateLab Deck Model/::1730761942
 SkateLab SDK.fbx::PackedScene::8895057288097082005::1730761931::1730761942::1::::<><>::
-::res://Other/::1730850500
-files.tscn::PackedScene::2919623692763938683::1730850498::0::1::::<><>::res://Scripts/main.gd<>uid://m6ovkecaw3aq::::res://Assets/HomeIco.png<>uid://bt8ybbniuvfld::::res://Other/Font.tres<>uid://5ndpy54bgfyl::::res://Assets/FIlesIco.png<>uid://b7syy5ksit032::::res://Assets/FileIco2.png
-Font.tres::LabelSettings::3789592245316838197::1730848840::0::1::::<><>::uid://bk5b20c17jw7o::::res://Assets/Roboto-Bold.ttf
+::res://Other/::1730950264
+files.tscn::PackedScene::2919623692763938683::1730950264::0::1::::<><>::res://Scripts/main.gd<>uid://m6ovkecaw3aq::::res://Assets/HomeIco.png<>uid://bt8ybbniuvfld::::res://Other/Font.tres<>uid://5ndpy54bgfyl::::res://Assets/FIlesIco.png<>uid://b7syy5ksit032::::res://Assets/FileIco2.png
+Font.tres::LabelSettings::3789592245316838197::1730949901::0::1::::<><>::uid://bk5b20c17jw7o::::res://Assets/Roboto-Bold.ttf
 Main.tscn::PackedScene::6203629154831751673::1730760455::0::1::::<><>::res://Scripts/main.gd<>uid://m6ovkecaw3aq::::res://Assets/HomeIco.png<>uid://5ndpy54bgfyl::::res://Assets/FIlesIco.png<>uid://b7syy5ksit032::::res://Assets/FileIco2.png<>uid://bt8ybbniuvfld::::res://Other/Font.tres
-mod.tscn::PackedScene::3682865336542832102::1730850500::0::1::::<><>::
-::res://Scripts/::1730854945
-autoload.gd::GDScript::-1::1730662954::0::1::::<>Node<>::
-filestuff.cs::CSharpScript::-1::1730855678::0::1::::<><>::
-main.gd::GDScript::-1::1730850530::0::1::::<>Control<>::
+mod.tscn::PackedScene::3682865336542832102::1730950264::0::1::::<><>::
+::res://Scripts/::1730950795
+autoload.gd::GDScript::-1::1730950264::0::1::::<>Node<>::
+main.gd::GDScript::-1::1730950795::0::1::::<>Control<>::

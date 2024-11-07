@@ -1,8 +1,9 @@
 extends Control
 @onready var modslist: VBoxContainer = $ModsListControl/Mods/ModsList
-
+@onready var ZipExtract = autoload.extractnode
 func _ready(): #gets called every scene change btw
 	get_tree().get_root().files_dropped.connect(_on_files_dropped)
+	ZipExtract.ZipRead("test")
 	print(autoload.scene)
 	if autoload.scene == true:
 		load_data()
@@ -157,7 +158,7 @@ func storevalue(foldername,modname,modimagepath,moddescription,modpath,modcatego
 func unzip(zippath:String):
 	var zipreader = ZIPReader.new()
 	var newfolder = zippath.get_file()
-	var modpath = ""
+	var modpath = "" #
 	var pakpath = autoload.modmanagerstoragedir
 	var modsettingspath = null
 	var modimagepath = null
