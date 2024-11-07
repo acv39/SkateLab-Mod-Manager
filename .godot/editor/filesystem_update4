@@ -2,3 +2,5 @@ res://Other/files.tscn
 res://Scripts/main.gd
 res://Other/Font.tres
 res://Other/mod.tscn
+res://Scripts/autoload.gd
+res://Scripts/ZipExtract.cs

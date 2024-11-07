@@ -1,5 +1,5 @@
 extends Control
-@onready var mods_list: VBoxContainer = $ModsListControl/Mods/ModsList
+@onready var modslist: VBoxContainer = $ModsListControl/Mods/ModsList
 
 func _ready(): #gets called every scene change btw
 	get_tree().get_root().files_dropped.connect(_on_files_dropped)
@@ -100,48 +100,48 @@ func pak(pakpath:String):
 	storevalue(newfolder,newfolder,null,"Pak Import, No Description",writeto+newfolder+"_P.pak","Misc",true)
 	save_data()
 
-func createnodes():#modname,modcategory,moddescription,modpath,modimage):
+func createnodes():
 	for loadedmods in autoload.loadmods:
+		var moddata = autoload.loadmods[loadedmods]
 		var modnodeinstance = autoload.ModNode.instantiate()
-		modnodeinstance.name = str(autoload.loadmods[loadedmods]["ModName"])
-		if mods_list.get_child_count() >= autoload.loadmods.size():
-			modnodeinstance.queue_free()
-		else:
-			modnodeinstance = autoload.ModNode.instantiate()
-			mods_list.add_child(modnodeinstance)
-			modnodeinstance.name = autoload.loadmods[loadedmods]["ModName"]
-			autoload.creatednodes[modnodeinstance.get_name()] = get_node(get_path_to(modnodeinstance)) #stores reference to newly created node
-			autoload.creatednodes[modnodeinstance.get_name()].find_child("ModName").text = autoload.loadmods[loadedmods]["ModName"]
-			autoload.creatednodes[modnodeinstance.get_name()].find_child("ModCategory").text = autoload.loadmods[loadedmods]["ModCategory"]
-			autoload.creatednodes[modnodeinstance.get_name()].find_child("ModToggle").toggled.connect(func(toggled_on:bool):
-				autoload.loadmods[loadedmods]["Toggled"] = toggled_on
-				print(autoload.loadmods[loadedmods]["Toggled"]))
-			autoload.creatednodes[modnodeinstance.get_name()].find_child("ModToggle").button_pressed = autoload.loadmods[loadedmods]["Toggled"]
-			autoload.creatednodes[modnodeinstance.get_name()].find_child("ClickFix").input_event.connect(func(_viewport, event, _shape_idx):
-				if event is InputEventMouseButton:
-					if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-						autoload.selectedmod = autoload.loadmods[loadedmods]
-						if autoload.loadmods[loadedmods].has("ModPreview2d") == false or autoload.loadmods[loadedmods]["ModPreview2d"] == true:
-							$"Preview/Control/3DPreviewContainer".hide()
-							#Preview IMG Stuff
-							var image = Image.new()
-							var texture = image.load(autoload.loadmods[loadedmods]["ModPreviewPath"])
-							var imagetexture = ImageTexture.new()
-							imagetexture.set_image(image)
-							$Preview/Control/TextureRect.texture = imagetexture
-							
-						else:
-							$"Preview/Control/3DPreviewContainer".show()
-							var image = Image.new()
-							var texture = image.load(autoload.loadmods[loadedmods]["ModPreviewPath"])
-							var imagetexture = ImageTexture.new()
-							imagetexture.set_image(image)
-							var mesh = $"Preview/Control/3DPreviewContainer/SubViewport/3D Preview/SkateLab SDK/Armature/Skeleton3D/Deck"	
-							var material_one = mesh.get_active_material(0)
-							material_one.albedo_texture = imagetexture
-							mesh.set_surface_override_material(0, material_one)
-						$Preview/Control/RichTextLabel.text = autoload.loadmods[loadedmods]["ModDescription"]
-				)
+		modnodeinstance.name = str(moddata["ModName"])
+		if modslist.get_child_count() < autoload.loadmods.size():
+			modslist.add_child(modnodeinstance)
+			autoload.creatednodes[modnodeinstance.get_name()] = get_node(get_path_to(modnodeinstance))
+			var modnamelabel = modnodeinstance.find_child("ModName")
+			var modcategorylabel = modnodeinstance.find_child("ModCategory")
+			var modtoggle = modnodeinstance.find_child("ModToggle")
+			var clickfixbutton = modnodeinstance.find_child("ClickFix")
+			modnamelabel.text = moddata["ModName"]
+			modcategorylabel.text = moddata["ModCategory"]
+			modtoggle.toggled.connect(func(toggledon: bool):
+				moddata["Toggled"] = toggledon
+			)
+			modtoggle.button_pressed = moddata["Toggled"]
+			clickfixbutton.input_event.connect(func(_viewport, event, _shape_idx):
+				if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+					autoload.selectedmod = moddata
+					if not moddata.has("ModPreview2d") or moddata["ModPreview2d"]:
+						#2d preview shit
+						$"Preview/Control/3DPreviewContainer".hide()
+						var image = Image.new()
+						image.load(moddata["ModPreviewPath"])
+						var imagetexture = ImageTexture.new()
+						imagetexture.set_image(image)
+						$"Preview/Control/TextureRect".texture = imagetexture
+					else:
+						#3d preview shit
+						$"Preview/Control/3DPreviewContainer".show()
+						var image = Image.new()
+						image.load(moddata["ModPreviewPath"])
+						var imagetexture = ImageTexture.new()
+						imagetexture.set_image(image)
+						var mesh = $"Preview/Control/3DPreviewContainer/SubViewport/3D Preview/SkateLab SDK/Armature/Skeleton3D/Deck"
+						var material_one = mesh.get_active_material(0)
+						material_one.albedo_texture = imagetexture
+						mesh.set_surface_override_material(0, material_one)
+					$"Preview/Control/RichTextLabel".text = moddata["ModDescription"]
+			)
 
 func storevalue(foldername,modname,modimagepath,moddescription,modpath,modcategory,modpreview2d):
 	autoload.loadmods[foldername] = {}

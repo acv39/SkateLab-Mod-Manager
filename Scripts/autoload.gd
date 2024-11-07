@@ -13,3 +13,6 @@ var modset = "skibidi"
 var ModNode = preload("res://Other/mod.tscn")
 var creatednodes = {}
 var selectedmod = null
+var extractscript:CSharpScript = load("res://Scripts/ZipExtract.cs")
+var extractnode = extractscript.new()
+var filesscene = preload("res://Other/files.tscn")

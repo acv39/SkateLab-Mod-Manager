@@ -1,0 +1,17 @@
+B:\Godot\Mod Manager\skatelab-mod-manager\.godot\mono\temp\obj\Debug\SkateLab Mod Manager.csproj.AssemblyReference.cache
+B:\Godot\Mod Manager\skatelab-mod-manager\.godot\mono\temp\obj\Debug\SkateLab Mod Manager.GeneratedMSBuildEditorConfig.editorconfig
+B:\Godot\Mod Manager\skatelab-mod-manager\.godot\mono\temp\obj\Debug\SkateLab Mod Manager.AssemblyInfoInputs.cache
+B:\Godot\Mod Manager\skatelab-mod-manager\.godot\mono\temp\obj\Debug\SkateLab Mod Manager.AssemblyInfo.cs
+B:\Godot\Mod Manager\skatelab-mod-manager\.godot\mono\temp\obj\Debug\SkateLab Mod Manager.csproj.CoreCompileInputs.cache
+B:\Godot\Mod Manager\skatelab-mod-manager\.godot\mono\temp\bin\Debug\SkateLab Mod Manager.deps.json
+B:\Godot\Mod Manager\skatelab-mod-manager\.godot\mono\temp\bin\Debug\SkateLab Mod Manager.runtimeconfig.json
+B:\Godot\Mod Manager\skatelab-mod-manager\.godot\mono\temp\bin\Debug\SkateLab Mod Manager.dll
+B:\Godot\Mod Manager\skatelab-mod-manager\.godot\mono\temp\bin\Debug\SkateLab Mod Manager.pdb
+B:\Godot\Mod Manager\skatelab-mod-manager\.godot\mono\temp\bin\Debug\GodotSharp.dll
+B:\Godot\Mod Manager\skatelab-mod-manager\.godot\mono\temp\bin\Debug\GodotSharpEditor.dll
+B:\Godot\Mod Manager\skatelab-mod-manager\.godot\mono\temp\obj\Debug\SkateLab Mod Manager.csproj.CopyComplete
+B:\Godot\Mod Manager\skatelab-mod-manager\.godot\mono\temp\obj\Debug\SkateLab Mod Manager.dll
+B:\Godot\Mod Manager\skatelab-mod-manager\.godot\mono\temp\obj\Debug\refint\SkateLab Mod Manager.dll
+B:\Godot\Mod Manager\skatelab-mod-manager\.godot\mono\temp\obj\Debug\SkateLab Mod Manager.pdb
+B:\Godot\Mod Manager\skatelab-mod-manager\.godot\mono\temp\obj\Debug\SkateLab Mod Manager.genruntimeconfig.cache
+B:\Godot\Mod Manager\skatelab-mod-manager\.godot\mono\temp\obj\Debug\ref\SkateLab Mod Manager.dll

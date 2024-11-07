@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "rZfb6lQisS00ITUayDS1jYLzW5W4U7rxqHvBXDWJ3Hvia54Sl2G2Xaq5Dl6y8LedDoBUV3L2jn1YG7L0KROXmw==",
+  "success": true,
+  "projectFilePath": "B:\\Godot\\Mod Manager\\skatelab-mod-manager\\SkateLab Mod Manager.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\sstaf\\.nuget\\packages\\godot.sourcegenerators\\4.3.0\\godot.sourcegenerators.4.3.0.nupkg.sha512",
+    "C:\\Users\\sstaf\\.nuget\\packages\\godotsharp\\4.3.0\\godotsharp.4.3.0.nupkg.sha512",
+    "C:\\Users\\sstaf\\.nuget\\packages\\godotsharpeditor\\4.3.0\\godotsharpeditor.4.3.0.nupkg.sha512"
+  ],
+  "logs": []
+}
