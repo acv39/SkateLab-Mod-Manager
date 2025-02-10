@@ -56,6 +56,14 @@ offset_bottom = 211.0
 icon = ExtResource("3_q444w")
 expand_icon = true
 
+[node name="ModCreator" type="Button" parent="."]
+layout_mode = 2
+offset_top = 244.0
+offset_right = 87.0
+offset_bottom = 331.0
+icon = ExtResource("4_3vhqj")
+expand_icon = true
+
 [node name="Settings" type="Button" parent="."]
 layout_mode = 2
 offset_top = 643.0
@@ -98,5 +106,6 @@ label_settings = ExtResource("5_1rs6q")
 [connection signal="file_selected" from="FileDialog" to="." method="_on_file_dialog_file_selected"]
 [connection signal="pressed" from="Home" to="." method="_on_home_pressed"]
 [connection signal="pressed" from="Files" to="." method="_on_files_pressed"]
+[connection signal="pressed" from="ModCreator" to="." method="_on_mod_creator_pressed"]
 [connection signal="pressed" from="Settings" to="." method="_on_settings_pressed"]
 [connection signal="pressed" from="GameDir" to="." method="_on_game_dir_pressed"]

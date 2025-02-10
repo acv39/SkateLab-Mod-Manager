@@ -12,8 +12,8 @@ public partial class FilesScene : Control
 
 	public override void _Ready()
 	{
-		GetTree().GetRoot().FilesDropped += _on_files_dropped;
 		base._Ready();
+		GetTree().GetRoot().FilesDropped += _on_files_dropped;
 		ModsList = GetNode<VBoxContainer>("ModsListControl/Mods/ModsList");
 		CreateNodes();
 		GetNode<TextEdit>("Mod Dir").Text = Global.ModDirectory.Join("");
@@ -22,6 +22,11 @@ public partial class FilesScene : Control
 	void _on_mod_explorer_button_pressed()
 	{
 		GetNode<FileDialog>("FileDialogmod").Popup();
+	}
+	
+	void _on_mod_creator_pressed()
+	{
+		GetTree().ChangeSceneToFile("res://Other/ModCreator.tscn");
 	}
 	
 	void _on_settings_pressed()
@@ -155,7 +160,7 @@ public partial class FilesScene : Control
 		NewFolder = NewFolder.TrimSuffix("_P.pak");
 		using (DirAccess dirAccess = DirAccess.Open(Data))
 		{
-			string WriteTo = Data + NewFolder + "\\";
+			string WriteTo = Data + NewFolder + "/";
 			dirAccess.MakeDir(Data + NewFolder);
 			DirAccess.CopyAbsolute(pakpath, WriteTo + NewFolder + "_P.pak");
 			Global.StoreData(NewFolder, NewFolder, null, "Pak Import", WriteTo + NewFolder + "_P.pak", "Misc", true);
@@ -170,7 +175,7 @@ public partial class FilesScene : Control
 		string ModDescription = null;
 		string ModSettingsPath = null;
 		string ModImagePath = null;
-		string ModCategory = "Misc";
+		string ModCategory = "9";
 		string ModName = "Set A Mod Name";
 		string NewFolder = Path.GetFileNameWithoutExtension(zippath);
 		string FolderName = null;
@@ -222,13 +227,7 @@ public partial class FilesScene : Control
 		Global.StoreData(NewFolder, ModName, ModImagePath, ModDescription, pakpath, ModCategory, ModPreview2D);
 		Global.SaveData();
 	}
-
-	void _on_start_game_pressed()
-	{
-		OS.ShellOpen("steam://launch/" + Main.SteamID); // comment this if not using steam.
-		//OS.Execute(Global.GameDirectory); uncomment this if using non steam, or change the code above for epic games/etc launchers.
-	}
-
+	
 	void _on_load_mods_pressed()
 	{
 		string modPath = Global.ModsFolderDirectory;
@@ -240,7 +239,7 @@ public partial class FilesScene : Control
 				GD.Print(key);
 				var ModFilePath = ((Dictionary)Global.LoadedMods[key])["ModPath"].AsString();
 				string ModFile = ModFilePath.GetFile();
-				string WriteTo = modPath + "\\";
+				string WriteTo = modPath + "/";
 				GD.Print(WriteTo);
 				DirAccess.CopyAbsolute(ModFilePath, WriteTo + ModFile);
 				((Dictionary)Global.LoadedMods[key])["ModLoadedInGameFiles"] = true;
@@ -250,7 +249,7 @@ public partial class FilesScene : Control
 			{
 				var ModFilePath = ((Dictionary)Global.LoadedMods[key])["ModPath"].AsString();
 				string ModFile = ModFilePath.GetFile();
-				string WriteTo = modPath + "\\";
+				string WriteTo = modPath + "/";
 				GD.Print(WriteTo+ModFilePath);
 				OS.MoveToTrash(WriteTo + ModFile);
 				((Dictionary)Global.LoadedMods[key])["ModLoadedInGameFiles"] = false;
@@ -270,7 +269,7 @@ public partial class FilesScene : Control
 		{
 			GetNode<Window>("DeleteModPopup").PopupCentered();
 			var Selected = Global.SelectedMod;
-			string ModsFolder = Global.ModsFolderDirectory + "\\";
+			string ModsFolder = Global.ModsFolderDirectory + "/";
 			string DataFolder = Global.ModManagerStorageDirectory;
 			string selectedpath = Selected["ModPath"].AsString();
 			string selectedfile = selectedpath.GetFile();
@@ -283,4 +282,14 @@ public partial class FilesScene : Control
 			GetTree().ReloadCurrentScene();
 		}
 	}
+	
+	// !!
+	
+	void _on_start_game_pressed()
+	{
+		OS.ShellOpen("steam://launch/" + Main.SteamID); // comment this if not using steam.
+		//OS.Execute(Global.GameDirectory); uncomment this if using non steam, or change the code above for epic games/etc launchers.
+	}
+
+	
 }

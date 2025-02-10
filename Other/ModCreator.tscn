@@ -1,0 +1,195 @@
+[gd_scene load_steps=6 format=3 uid="uid://cegvu0ofqb8fw"]
+
+[ext_resource type="Script" path="res://Scripts/ModCreator.cs" id="1_rtplu"]
+[ext_resource type="Texture2D" uid="uid://m6ovkecaw3aq" path="res://Assets/HomeIco.png" id="2_7sm4m"]
+[ext_resource type="Texture2D" uid="uid://5ndpy54bgfyl" path="res://Assets/FIlesIco.png" id="3_yhv4q"]
+[ext_resource type="Texture2D" uid="uid://b7syy5ksit032" path="res://Assets/FileIco2.png" id="4_1dkq1"]
+[ext_resource type="Texture2D" uid="uid://d0cioyg1dmkvf" path="res://Assets/GearIcon.png" id="4_l2x6q"]
+
+[node name="Main" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 2.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_rtplu")
+metadata/_edit_use_anchors_ = true
+
+[node name="Pak" type="FileDialog" parent="."]
+auto_translate_mode = 1
+title = "Open a File"
+initial_position = 1
+size = Vector2i(546, 390)
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+filters = PackedStringArray("*.pak; Mod Files")
+show_hidden_files = true
+use_native_dialog = true
+
+[node name="Preview IMG" type="FileDialog" parent="."]
+auto_translate_mode = 1
+title = "Open a File"
+initial_position = 1
+size = Vector2i(546, 390)
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+filters = PackedStringArray("*.png ; Preview Image")
+show_hidden_files = true
+use_native_dialog = true
+
+[node name="Mod_Created" type="AcceptDialog" parent="."]
+title = "Mod Created Successfully"
+initial_position = 2
+size = Vector2i(490, 165)
+dialog_text = "Mod Stored In:"
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 2
+offset_right = 1025.0
+offset_bottom = 769.0
+color = Color(0.254343, 0.254343, 0.254343, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+layout_mode = 2
+offset_right = 88.0
+offset_bottom = 768.0
+color = Color(0.136751, 0.136751, 0.136751, 1)
+
+[node name="Home" type="Button" parent="."]
+layout_mode = 2
+offset_right = 87.0
+offset_bottom = 87.0
+icon = ExtResource("2_7sm4m")
+expand_icon = true
+
+[node name="Files" type="Button" parent="."]
+layout_mode = 2
+offset_top = 124.0
+offset_right = 87.0
+offset_bottom = 211.0
+icon = ExtResource("3_yhv4q")
+expand_icon = true
+
+[node name="ModCreator" type="Button" parent="."]
+layout_mode = 0
+offset_top = 244.0
+offset_right = 87.0
+offset_bottom = 331.0
+icon = ExtResource("4_1dkq1")
+expand_icon = true
+
+[node name="Settings" type="Button" parent="."]
+layout_mode = 2
+offset_top = 643.0
+offset_right = 88.0
+offset_bottom = 731.0
+icon = ExtResource("4_l2x6q")
+expand_icon = true
+
+[node name="CreateMod" type="Button" parent="."]
+layout_mode = 0
+offset_left = 162.0
+offset_top = 643.0
+offset_right = 260.0
+offset_bottom = 674.0
+scale = Vector2(1.52, 1.52)
+text = "Create Mod"
+
+[node name="ModExplorerButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 109.0
+offset_top = 9.0
+offset_right = 183.0
+offset_bottom = 83.0
+scale = Vector2(0.68, 0.68)
+icon = ExtResource("4_1dkq1")
+expand_icon = true
+
+[node name="ModPreviewIMG Button" type="Button" parent="."]
+layout_mode = 0
+offset_left = 109.0
+offset_top = 81.0
+offset_right = 183.0
+offset_bottom = 155.0
+scale = Vector2(0.68, 0.68)
+icon = ExtResource("4_1dkq1")
+expand_icon = true
+
+[node name="ModDir" type="TextEdit" parent="."]
+layout_mode = 0
+offset_left = 169.0
+offset_top = 21.0
+offset_right = 874.0
+offset_bottom = 57.0
+placeholder_text = "Mod Pak File Path (FIle Drop Allowed)"
+
+[node name="ModDir2" type="TextEdit" parent="."]
+layout_mode = 0
+offset_left = 169.0
+offset_top = 87.0
+offset_right = 874.0
+offset_bottom = 123.0
+placeholder_text = "Mod PNG Preview File Path"
+
+[node name="Title" type="TextEdit" parent="."]
+layout_mode = 0
+offset_left = 169.0
+offset_top = 187.0
+offset_right = 874.0
+offset_bottom = 223.0
+placeholder_text = "Mod Title"
+
+[node name="Mod Description" type="TextEdit" parent="."]
+layout_mode = 0
+offset_left = 169.0
+offset_top = 274.0
+offset_right = 874.0
+offset_bottom = 474.0
+placeholder_text = "Mod Description"
+
+[node name="OptionButton" type="OptionButton" parent="."]
+layout_mode = 0
+offset_left = 881.0
+offset_top = 289.0
+offset_right = 1009.0
+offset_bottom = 320.0
+selected = 9
+item_count = 11
+popup/item_0/text = "Map"
+popup/item_1/text = "Deck"
+popup/item_1/id = 1
+popup/item_2/text = "Griptape"
+popup/item_2/id = 2
+popup/item_3/text = "Trucks"
+popup/item_3/id = 3
+popup/item_4/text = "Wheels"
+popup/item_4/id = 4
+popup/item_5/text = "Shoes"
+popup/item_5/id = 5
+popup/item_6/text = "Obj Dropper"
+popup/item_6/id = 6
+popup/item_7/text = "Audio"
+popup/item_7/id = 7
+popup/item_8/text = "Blueprint"
+popup/item_8/id = 8
+popup/item_9/text = "Character"
+popup/item_9/id = 9
+popup/item_10/text = "Misc"
+popup/item_10/id = 9
+
+[connection signal="file_selected" from="Pak" to="." method="_on_pak_file_selected"]
+[connection signal="file_selected" from="Preview IMG" to="." method="_on_preview_img_file_selected"]
+[connection signal="pressed" from="Home" to="." method="_on_home_pressed"]
+[connection signal="pressed" from="Files" to="." method="_on_files_pressed"]
+[connection signal="pressed" from="Settings" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="CreateMod" to="." method="_on_create_mod_pressed"]
+[connection signal="pressed" from="ModExplorerButton" to="." method="_on_mod_explorer_button_pressed"]
+[connection signal="pressed" from="ModPreviewIMG Button" to="." method="_on_mod_preview_img_button_pressed"]
+[connection signal="text_changed" from="Title" to="." method="_on_title_text_changed"]
+[connection signal="text_changed" from="Mod Description" to="." method="_on_mod_description_text_changed"]
+[connection signal="item_selected" from="OptionButton" to="." method="_on_option_button_item_selected"]

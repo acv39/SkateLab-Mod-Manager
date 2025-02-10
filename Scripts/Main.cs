@@ -2,7 +2,6 @@ using Godot;
 using System;
 using System.IO;
 using System.IO.Compression;
-using Color = System.Drawing.Color;
 
 
 public partial class Main : Control
@@ -35,29 +34,29 @@ public partial class Main : Control
 			Global.GameDirectory = @filepath;
 			GD.Print(filepath);
 			Global.ModManagerStorageDirectory = Global.GameDirectory.TrimSuffix(GameFileExecutableBinary); 
-			Global.ModsFolderDirectory = Global.GameDirectory.TrimSuffix("Binaries\\Win64\\"+GameFileExecutableBinary);
+			Global.ModsFolderDirectory = Global.GameDirectory.TrimSuffix("Binaries/Win64/"+GameFileExecutableBinary);
 			using(DirAccess dirAccess = DirAccess.Open(Global.ModsFolderDirectory)){ // Open diraccess for creation of mods folder, disposed of after code executed.
-			if(dirAccess.DirExists("Content\\Paks\\"+ModManagerFolderName) == true){ // if the mods folder is made
-				GD.Print("Mod Manager Folder Found");
-				Global.ModsFolderDirectory = Global.ModsFolderDirectory+"Content\\Paks\\"+ModManagerFolderName;
-			}else if(dirAccess.DirExists("Content\\Paks") == true){ // else if paks folder exist make mods folder
-				GD.Print("Paks Folder Found, Creating Mods Folder");
-				dirAccess.MakeDir(Global.ModsFolderDirectory+"Content\\Paks\\"+ModManagerFolderName);
-				Global.ModsFolderDirectory = Global.ModsFolderDirectory+"Content\\Paks\\"+ModManagerFolderName+"\\";
-				GD.Print("Created Mods Folder");
-			}else{
-				GD.Print("Folder Not Found.");
+				if(dirAccess.DirExists("Content/Paks/"+ModManagerFolderName)){ // if the mods folder is made
+					GD.Print("Mod Manager Folder Found");
+					Global.ModsFolderDirectory = Global.ModsFolderDirectory+"Content/Paks/"+ModManagerFolderName;
+				}else if(dirAccess.DirExists("Content/Paks") == true){ // else if paks folder exist make mods folder
+					GD.Print("Paks Folder Found, Creating Mods Folder");
+					dirAccess.MakeDir(Global.ModsFolderDirectory+"Content/Paks/"+ModManagerFolderName);
+					Global.ModsFolderDirectory = Global.ModsFolderDirectory+"Content/Paks/"+ModManagerFolderName+"/";
+					GD.Print("Created Mods Folder");
+				}else{
+					GD.Print("Folder Not Found.");
 				
-			}}
+				}}
 			using(DirAccess dirAccess = DirAccess.Open(Global.ModManagerStorageDirectory)){ // Open diraccess for creation of Mod Manager data folder, disposed of after code executed.
 				if (dirAccess.DirExists(ModManagerFolderName+"-DATA") == false){
 					GD.Print("Data Folder Not Found, Creating It!");
 					dirAccess.MakeDir(Global.ModManagerStorageDirectory+ModManagerFolderName+"-DATA");
-					Global.ModManagerStorageDirectory = Global.ModManagerStorageDirectory+ModManagerFolderName+"-DATA\\";
+					Global.ModManagerStorageDirectory = Global.ModManagerStorageDirectory+ModManagerFolderName+"-DATA/";
 					Global.GameDirectoryIsSet = true;
 				}else{
 					GD.Print("data folder found");
-					Global.ModManagerStorageDirectory = Global.ModManagerStorageDirectory+ModManagerFolderName+"-DATA\\";
+					Global.ModManagerStorageDirectory = Global.ModManagerStorageDirectory+ModManagerFolderName+"-DATA/";
 					Global.GameDirectoryIsSet = true;
 					Global.SaveData();
 				}
@@ -90,6 +89,10 @@ public partial class Main : Control
 		GetTree().ChangeSceneToFile("res://Other/Main.tscn");
 	}
 
+	void _on_mod_creator_pressed()
+	{
+		GetTree().ChangeSceneToFile("res://Other/ModCreator.tscn");
+	}
 }
 
 

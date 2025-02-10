@@ -15,7 +15,7 @@ public partial class Global : Node
 	public static Dictionary CreatedNodes = new Dictionary(); // currently created nodes
 	public static Dictionary SelectedMod = new Dictionary(); // currently selected mod
 	public static Resource FilesScene = GD.Load("res://Other/files.tscn"); // fix for laggy scene change as its always loaded
-	public static Array ModTypes = new Array{ "Map", "Deck", "Griptape", "Trucks", "Wheels", "Shoes", "Obj Dropper", "Audio", "Blueprint", "Misc" };
+	public static string[] ModTypes = {"Map", "Deck", "Griptape", "Trucks", "Wheels", "Shoes", "Obj Dropper", "Audio", "Blueprint","Character", "Misc"};
 	public static bool AutoImport = true;
 	
 	

@@ -1,3 +1,9 @@
-res://Other/files.tscn
-res://Scripts/main.gd
-res://Other/Font.tres
+res://Scripts/FilesScene.cs
+res://Scripts/Settings.cs
+res://Scripts/Main.cs
+res://Scripts/ModCreator.cs
+res://Scripts/Global.cs
+res://Other/Main.tscn
+res://Other/mod.tscn
+res://Other/Settings.tscn
+res://Other/ModCreator.tscn

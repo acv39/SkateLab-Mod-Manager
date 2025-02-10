@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://dtgyus83gjts3"]
+[gd_scene load_steps=6 format=3 uid="uid://dtgyus83gjts3"]
 
 [ext_resource type="Script" path="res://Scripts/Settings.cs" id="1_65lxw"]
 [ext_resource type="Texture2D" uid="uid://m6ovkecaw3aq" path="res://Assets/HomeIco.png" id="2_8yd5p"]
 [ext_resource type="Texture2D" uid="uid://5ndpy54bgfyl" path="res://Assets/FIlesIco.png" id="3_ldjeg"]
 [ext_resource type="Texture2D" uid="uid://d0cioyg1dmkvf" path="res://Assets/GearIcon.png" id="4_415cy"]
+[ext_resource type="Texture2D" uid="uid://b7syy5ksit032" path="res://Assets/FileIco2.png" id="4_xb4wc"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -44,6 +45,14 @@ offset_bottom = 211.0
 icon = ExtResource("3_ldjeg")
 expand_icon = true
 
+[node name="ModCreator" type="Button" parent="."]
+layout_mode = 0
+offset_top = 244.0
+offset_right = 87.0
+offset_bottom = 331.0
+icon = ExtResource("4_xb4wc")
+expand_icon = true
+
 [node name="Settings" type="Button" parent="."]
 layout_mode = 2
 offset_top = 643.0
@@ -58,18 +67,10 @@ offset_left = 120.0
 offset_top = 87.0
 offset_right = 263.0
 offset_bottom = 118.0
-button_pressed = true
 text = "Auto Import"
-
-[node name="Label" type="Label" parent="."]
-layout_mode = 0
-offset_left = 259.0
-offset_top = 364.0
-offset_right = 707.0
-offset_bottom = 387.0
-text = "Custom Themes Soon!!! otherwise edit source game files :) (COLORRECT & COLORRECT2)"
 
 [connection signal="pressed" from="Home" to="." method="_on_home_pressed"]
 [connection signal="pressed" from="Files" to="." method="_on_files_pressed"]
+[connection signal="pressed" from="ModCreator" to="." method="_on_mod_creator_pressed"]
 [connection signal="pressed" from="Settings" to="." method="_on_settings_pressed"]
 [connection signal="toggled" from="CheckButton" to="." method="_on_check_button_toggled"]
