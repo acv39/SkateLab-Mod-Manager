@@ -84,9 +84,7 @@ public partial class FilesScene : Control
 			else
 			{
 				GD.Print("Not A Valid File Type");
-
 			}
-
 		}
 	}
 
@@ -126,11 +124,20 @@ public partial class FilesScene : Control
 						{
 							GD.Print("2d shit");
 							GetNode<SubViewportContainer>("Preview/Control/3DPreviewContainer").Hide();
-							Image image = new Image();
-							image.Load((string)ModDataDict["ModPreviewPath"]);
-							ImageTexture imageTexture = new ImageTexture();
-							imageTexture.SetImage(image);
-							GetNode<TextureRect>("Preview/Control/TextureRect").Texture = imageTexture;
+							string previewPath = Path.GetFullPath((string)ModDataDict["ModPreviewPath"]).GetBaseDir();
+							GD.Print($"Img Preview Path: {previewPath}");
+							if (Directory.Exists(previewPath))
+							{
+								Image image = new Image();
+								image.Load((string)ModDataDict["ModPreviewPath"]);
+								ImageTexture imageTexture = new ImageTexture();
+								imageTexture.SetImage(image);
+								GetNode<TextureRect>("Preview/Control/TextureRect").Texture = imageTexture;
+							}
+							else
+							{
+								GD.PrintErr("Image File Not Found");
+							}
 						}
 						else if (ModDataDict["ModPreview2D"].AsBool() == false)
 						{
@@ -230,6 +237,7 @@ public partial class FilesScene : Control
 	
 	void _on_load_mods_pressed()
 	{
+		GD.Print($"Mod Folder Directory: {Global.ModsFolderDirectory}");
 		string modPath = Global.ModsFolderDirectory;
 		GetNode<Window>("Window").Popup();
 		foreach (var (key,_value) in Global.LoadedMods) // key is mods
@@ -239,23 +247,33 @@ public partial class FilesScene : Control
 				GD.Print(key);
 				var ModFilePath = ((Dictionary)Global.LoadedMods[key])["ModPath"].AsString();
 				string ModFile = ModFilePath.GetFile();
-				string WriteTo = modPath + "/";
-				GD.Print(WriteTo);
+				string WriteTo = modPath;
+				GD.Print($"1 ModFilePath,WriteTo,ModFile: {ModFilePath},{WriteTo},{ModFile}");
 				DirAccess.CopyAbsolute(ModFilePath, WriteTo + ModFile);
 				((Dictionary)Global.LoadedMods[key])["ModLoadedInGameFiles"] = true;
 			}
 
-			if (((Dictionary)Global.LoadedMods[key])["Toggled"].AsBool() == false && ((Dictionary)Global.LoadedMods[key])["ModLoadedInGameFiles"].AsBool()) // fucking gonna write this bullshit in pure c# no game engine istfg
+			if (((Dictionary)Global.LoadedMods[key])["Toggled"].AsBool() == false && ((Dictionary)Global.LoadedMods[key])["ModLoadedInGameFiles"].AsBool()) //if its checkbox is toggled false and if its loaded in game files
 			{
 				var ModFilePath = ((Dictionary)Global.LoadedMods[key])["ModPath"].AsString();
 				string ModFile = ModFilePath.GetFile();
-				string WriteTo = modPath + "/";
-				GD.Print(WriteTo+ModFilePath);
-				OS.MoveToTrash(WriteTo + ModFile);
+				string WriteTo = modPath;
+				GD.Print($"2 ModFilePath,WriteTo,ModFile: {ModFilePath},{WriteTo},{ModFile}");
+				if (Directory.Exists(WriteTo))
+				{
+					GD.Print("OS Trashed1");
+					OS.MoveToTrash(WriteTo+ModFile);
+					GD.Print("OS Trashed2");
+				}
+				else
+				{
+					GD.PrintErr($"{WriteTo}{ModFile}: File Was Deleted At Some Point.");
+				}
 				((Dictionary)Global.LoadedMods[key])["ModLoadedInGameFiles"] = false;
 			}
 		}
 		GetNode<Window>("Window").Hide();
+		Global.SaveData();
 	}
 
 	void _on_remove_mod_pressed()
@@ -287,7 +305,7 @@ public partial class FilesScene : Control
 	
 	void _on_start_game_pressed()
 	{
-		OS.ShellOpen("steam://launch/" + Main.SteamID); // comment this if not using steam.
+		OS.ShellOpen("steam://launch/" + Main.SteamID); // comment this out if not using steam.
 		//OS.Execute(Global.GameDirectory); uncomment this if using non steam, or change the code above for epic games/etc launchers.
 	}
 

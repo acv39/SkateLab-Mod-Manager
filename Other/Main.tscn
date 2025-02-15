@@ -58,9 +58,9 @@ expand_icon = true
 
 [node name="ModCreator" type="Button" parent="."]
 layout_mode = 2
-offset_top = 244.0
+offset_top = 532.0
 offset_right = 87.0
-offset_bottom = 331.0
+offset_bottom = 619.0
 icon = ExtResource("4_3vhqj")
 expand_icon = true
 

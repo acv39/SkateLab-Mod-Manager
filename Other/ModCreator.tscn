@@ -26,7 +26,7 @@ size = Vector2i(546, 390)
 ok_button_text = "Open"
 file_mode = 0
 access = 2
-filters = PackedStringArray("*.pak; Mod Files")
+filters = PackedStringArray("*.pak;Mod Pak")
 show_hidden_files = true
 use_native_dialog = true
 
@@ -77,9 +77,9 @@ expand_icon = true
 
 [node name="ModCreator" type="Button" parent="."]
 layout_mode = 0
-offset_top = 244.0
+offset_top = 532.0
 offset_right = 87.0
-offset_bottom = 331.0
+offset_bottom = 619.0
 icon = ExtResource("4_1dkq1")
 expand_icon = true
 
@@ -93,9 +93,9 @@ expand_icon = true
 
 [node name="CreateMod" type="Button" parent="."]
 layout_mode = 0
-offset_left = 162.0
+offset_left = 193.0
 offset_top = 643.0
-offset_right = 260.0
+offset_right = 319.0
 offset_bottom = 674.0
 scale = Vector2(1.52, 1.52)
 text = "Create Mod"
@@ -126,7 +126,7 @@ offset_left = 169.0
 offset_top = 21.0
 offset_right = 874.0
 offset_bottom = 57.0
-placeholder_text = "Mod Pak File Path (FIle Drop Allowed)"
+placeholder_text = "Mod Pak Path"
 
 [node name="ModDir2" type="TextEdit" parent="."]
 layout_mode = 0
@@ -142,7 +142,7 @@ offset_left = 169.0
 offset_top = 187.0
 offset_right = 874.0
 offset_bottom = 223.0
-placeholder_text = "Mod Title"
+placeholder_text = "Mod Title/Pak File Name"
 
 [node name="Mod Description" type="TextEdit" parent="."]
 layout_mode = 0
@@ -154,11 +154,10 @@ placeholder_text = "Mod Description"
 
 [node name="OptionButton" type="OptionButton" parent="."]
 layout_mode = 0
-offset_left = 881.0
-offset_top = 289.0
-offset_right = 1009.0
-offset_bottom = 320.0
-selected = 9
+offset_left = 886.0
+offset_top = 274.0
+offset_right = 1014.0
+offset_bottom = 305.0
 item_count = 11
 popup/item_0/text = "Map"
 popup/item_1/text = "Deck"
@@ -182,6 +181,16 @@ popup/item_9/id = 9
 popup/item_10/text = "Misc"
 popup/item_10/id = 9
 
+[node name="PakOrZip" type="CheckButton" parent="."]
+layout_mode = 0
+offset_left = 99.0
+offset_top = 650.0
+offset_right = 176.0
+offset_bottom = 681.0
+disabled = true
+text = ".Zip"
+
+[connection signal="dir_selected" from="Pak" to="." method="_on_pak_dir_selected"]
 [connection signal="file_selected" from="Pak" to="." method="_on_pak_file_selected"]
 [connection signal="file_selected" from="Preview IMG" to="." method="_on_preview_img_file_selected"]
 [connection signal="pressed" from="Home" to="." method="_on_home_pressed"]
@@ -193,3 +202,4 @@ popup/item_10/id = 9
 [connection signal="text_changed" from="Title" to="." method="_on_title_text_changed"]
 [connection signal="text_changed" from="Mod Description" to="." method="_on_mod_description_text_changed"]
 [connection signal="item_selected" from="OptionButton" to="." method="_on_option_button_item_selected"]
+[connection signal="toggled" from="PakOrZip" to="." method="_on_pak_or_zip_toggled"]
