@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SkateLab Mod Manager")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("ExportRelease")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6f5f8003b9c5df7b5648835efa5a6fe8010c37fc")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+44cd36452619be03837ee227c588e48ec67ebb4a")]
 [assembly: System.Reflection.AssemblyProductAttribute("SkateLab Mod Manager")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SkateLab Mod Manager")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

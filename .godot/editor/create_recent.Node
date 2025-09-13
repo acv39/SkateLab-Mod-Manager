@@ -1,11 +1,11 @@
+Button
+CheckButton
 AcceptDialog
 Popup
 FileDialog
 OptionButton
 MenuButton
 TextEdit
-Button
-CheckButton
 ColorPicker
 Window
 Label

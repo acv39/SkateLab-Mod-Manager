@@ -13,13 +13,15 @@ public partial class Global : Node
 	public static string[] ModSettings; // mods settings from text file
 	public static Dictionary LoadedMods = new Dictionary(); // loaded mods. 
 	public static Dictionary CreatedNodes = new Dictionary(); // currently created nodes
+	public static Dictionary CreatedOnlineNodes = new Dictionary(); // currently created online mod nodes
 	public static Dictionary SelectedMod = new Dictionary(); // currently selected mod
+	public static Dictionary SelectedOnlineMod = new Dictionary();
 	public static Resource FilesScene = GD.Load("res://Other/files.tscn"); // fix for laggy scene change as its always loaded
-	public static string[] ModTypes = {"Map", "Deck", "Griptape", "Trucks", "Wheels", "Shoes", "Obj Dropper", "Audio", "Blueprint","Character", "Misc"};
+	public static string[] ModTypes = {"Map", "Deck Graphic", "Griptape", "Trucks", "Wheels", "Shoes", "Obj Dropper", "Audio", "Blueprint","Character","Clothes","Misc"};
 	public static bool AutoImport = true;
 	
 	
-	public static void StoreData(string FolderName,string ModName,string ModImagePath,string ModDescription,string ModPath,string ModCategory,bool ModPreview2D)
+	public static void StoreData(string FolderName,string ModName,string ModImagePath,string ModDescription,string ModPath,int ModCategory,bool ModPreview2D,ulong ModVersion)
     { 
       
 	    if(LoadedMods.ContainsKey(FolderName)){
@@ -32,7 +34,8 @@ public partial class Global : Node
             {"ModLoadedInGameFiles",false},
             {"Toggled",true},
             {"FolderName",FolderName},
-            {"ModPreview2D",ModPreview2D}};
+            {"ModPreview2D",ModPreview2D},
+            {"ModVersion",ModVersion}};
         }else{
             LoadedMods.Add(FolderName,new Dictionary{
             {"ModName",ModName},
@@ -43,7 +46,8 @@ public partial class Global : Node
             {"ModLoadedInGameFiles",false},
             {"Toggled",true},
             {"FolderName",FolderName},
-            {"ModPreview2D",ModPreview2D}
+            {"ModPreview2D",ModPreview2D},
+            {"ModVersion",ModVersion}
 			});
         }
         GD.Print(LoadedMods);

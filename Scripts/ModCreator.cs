@@ -21,7 +21,12 @@ public partial class ModCreator : Control
 		base._Ready();
 		GetTree().GetRoot().FilesDropped += _on_files_dropped;
 	}
-
+	
+	void _on_online_pressed()
+	{
+		GetTree().ChangeSceneToFile("res://Other/Online.tscn");
+	}
+	
 	void CreateZip(string pakpath)
 	{
 		GD.Print($"PakPath: {pakpath}");
@@ -52,63 +57,6 @@ public partial class ModCreator : Control
 			GetNode<AcceptDialog>("Mod_Created").Popup();
 		}
 	}
-	//TODO: Implement unreal pak functionality (temp removed due to bugs and needing to push Other Fixes asap, did almost Work)
-	/*string RunUnrealPak(string Folder)
-	{
-		// Get absolute path for UnrealPak.exe
-		string unrealPakResourcePath = "res://unrealpak/UnrealPak.exe";
-		string unrealPakExePath = ProjectSettings.GlobalizePath(unrealPakResourcePath);
-
-		if (!File.Exists(unrealPakExePath))
-		{
-			GD.PrintErr("UnrealPak.exe not found at: " + unrealPakExePath);
-			return "Error";
-		}
-
-		// Define the output .pak file path
-		string pakFilePath = Path.Combine(Global.ModManagerStorageDirectory, $"{ModTitle}_P.pak");
-		GD.Print($"Folder = {@Folder}");
-
-
-		string dirshit = Path.GetFullPath(@Folder);
-		GD.Print($"dirshit = \"{dirshit}\"");
-		// Construct arguments for UnrealPak
-		string arguments = $"\"{pakFilePath}\" -create=\"{@Folder}\" -compress";
-
-		// Setup process to execute UnrealPak
-		ProcessStartInfo psi = new ProcessStartInfo
-		{
-			FileName = unrealPakExePath,
-			Arguments = arguments,
-			UseShellExecute = false,
-			RedirectStandardOutput = true,
-			RedirectStandardError = true,
-			CreateNoWindow = false,
-		};
-
-		try
-		{
-			using (Process process = Process.Start(psi))
-			{
-				string output = process.StandardOutput.ReadToEnd();
-				string error = process.StandardError.ReadToEnd();
-				process.WaitForExit();
-
-				GD.Print("UnrealPak Output: " + output);
-				if (!string.IsNullOrEmpty(error))
-				{
-					GD.PrintErr("UnrealPak Error: " + error);
-				}
-			}
-		}
-		catch (Exception ex)
-		{
-			GD.PrintErr("Failed to execute UnrealPak.exe: " + ex.Message);
-		}
-
-		return pakFilePath;
-	}*/ // Ai generated shit for unreal pak, Doesn't fully work so dont use it for anything.
-	
 	
 	void _on_create_mod_pressed()
 	{

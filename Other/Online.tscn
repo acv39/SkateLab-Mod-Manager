@@ -1,0 +1,537 @@
+[gd_scene load_steps=4 format=3 uid="uid://d1wpisj5s127j"]
+
+[ext_resource type="LabelSettings" uid="uid://bt8ybbniuvfld" path="res://Other/Font.tres" id="2_s2okc"]
+[ext_resource type="PackedScene" uid="uid://b6lelpe5ie34h" path="res://Other/SideBar.tscn" id="3_6rkt1"]
+
+[sub_resource type="CSharpScript" id="CSharpScript_jkvh4"]
+script/source = "using Godot;
+using System;
+using System.IO;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
+using Godot.Collections;
+using Array = Godot.Collections.Array;
+using FileAccess = Godot.FileAccess;
+
+public partial class Online : Control
+{
+	VBoxContainer ModsList;
+	
+    private HttpRequest myHttpRequest;
+    
+    private Array threadDataList = new Array(); // List to store parsed thread data
+
+    private string SelectedAttachMod;
+    private HttpRequest _httpRequest;
+
+    public override void _Ready()
+    {
+	    GetNode<Window>(\"Window\").Show();
+        myHttpRequest = new HttpRequest();
+        AddChild(myHttpRequest);
+        _httpRequest = new HttpRequest();
+        AddChild(_httpRequest);
+
+
+        _httpRequest.RequestCompleted += OnRequestCompleted2;
+        myHttpRequest.RequestCompleted += OnRequestCompleted;
+
+        string url = \"https://c24c991c-176a-486a-88e6-f989a9e9285a-00-3bmdxpri7b5bz.janeway.replit.dev/forum/1255003263573688461/threads\";
+        
+        // Send the request to the server
+        if (myHttpRequest.Request(url) != Error.Ok)
+        {
+            GD.PrintErr(\"Request failed to send.\");
+        }
+        ModsList = GetNode<VBoxContainer>(\"ModsListControl/Mods/ModsList\");
+    }
+    private void OnRequestCompleted2(long result, long responseCode, string[] headers, byte[] body)
+    {
+	    if (result == (long)Error.Ok)
+	    {
+		    // Check for successful response code (200-299)
+		    if (responseCode >= 200 && responseCode < 300)
+		    {
+			    // Save the file
+			    var file = FileAccess.Open(\"user://file.zip\", FileAccess.ModeFlags.Write);
+			    if (file != null)
+			    {
+				    file.StoreBuffer(body);
+				    file.Close();
+				    GD.Print(\"File downloaded and saved.\");
+			    }
+			    else
+			    {
+				    GD.PrintErr(\"Failed to open the file for writing.\");
+			    }
+		    }
+		    else
+		    {
+			    GD.PrintErr(\"Request failed with response code: \" + responseCode);
+		    }
+	    }
+	    else
+	    {
+		    GD.PrintErr(\"Request failed with error: \" + (Error)result);
+	    }
+    }
+    
+    public void DownloadFile(string url, string savePath)
+    {
+	    // Start the request
+	    Error result = _httpRequest.Request(url);
+
+	    if (result != Error.Ok)
+	    {
+		    GD.PrintErr(\"Failed to start request: \" + result);
+	    }
+	    else
+	    {
+		    GD.Print(\"Request sent. Waiting for response...\");
+	    }
+    }
+    
+    private void OnRequestCompleted(long result, long responseCode, string[] headers, byte[] body)
+    {
+        if (responseCode != 200)
+        {
+            GetNode<Window>(\"Window\").SetTitle(\"HTTP Error: \" + responseCode);
+            return;
+        }
+        string jsonString = System.Text.Encoding.UTF8.GetString(body); // Convert byte array to string
+        var json = new Json();
+        if (json.Parse(jsonString) != Error.Ok)
+        {
+            GD.PrintErr(\"Failed to parse JSON.\");
+            return;
+        }
+
+        // Print raw JSON for debugging
+        GD.Print(\"Raw JSON: \" + jsonString);
+        
+        var jsonData = (Array)json.Data; // Cast the JSON data to an Array
+        if (jsonData == null)
+        {
+            GD.PrintErr(\"Failed to cast JSON data to Array.\");
+            return;
+        }
+        // Loop through the array of thread data
+        foreach (var item in jsonData)
+        {
+            if ((Dictionary)item is Dictionary itemDict)
+            {
+	            threadDataList.Add(itemDict); // Add the dictionary (thread data) to the list
+            }
+        }
+        // Print the number of threads processed
+        GD.Print(\"Parsed \" + threadDataList.Count + \" threads.\");
+        _ = CreateNodes();
+        GetNode<Window>(\"Window\").Hide();
+    }
+
+    void _on_window_close_requested()
+    {
+	    GetTree().ChangeSceneToFile(\"res://Other/Main.tscn\");
+    }    
+    
+    void _on_rich_text_label_meta_clicked(Variant meta)
+    {
+	    OS.ShellOpen((string)meta);
+    } // link magic
+    
+    
+    
+    private CancellationTokenSource imageLoadCancellation;
+	public async Task<ImageTexture> LoadImageFromUrlAsync(string url)
+	{
+	    // Cancel previous image load if a new request is made
+	    imageLoadCancellation?.Cancel();
+	    imageLoadCancellation = new CancellationTokenSource();
+	    var cancellationToken = imageLoadCancellation.Token;
+
+	    var imageRequest = new HttpRequest();
+	    AddChild(imageRequest);
+
+	    var tcs = new TaskCompletionSource<ImageTexture>();
+
+	    imageRequest.RequestCompleted += async (long result, long responseCode, string[] headers, byte[] body) =>
+	    {
+	        if (cancellationToken.IsCancellationRequested)
+	        {
+	            GD.Print(\"Image load canceled.\");
+	            tcs.SetResult(null);
+	            imageRequest.QueueFree();
+	            return;
+	        }
+
+	        if (responseCode != 200)
+	        {
+	            GD.PrintErr($\"Image request failed: {responseCode}\");
+	            tcs.SetResult(null);
+	            imageRequest.QueueFree();
+	            return;
+	        }
+
+	        if (body == null || body.Length == 0)
+	        {
+	            GD.PrintErr(\"Received empty image data.\");
+	            tcs.SetResult(null);
+	            imageRequest.QueueFree();
+	            return;
+	        }
+
+	        ImageTexture resultTexture = await Task.Run(() =>
+	        {
+	            Image image = new Image();
+	            Error err = image.LoadPngFromBuffer(body);
+	            if (err != Error.Ok)
+	            {
+	                err = image.LoadJpgFromBuffer(body);
+	            }
+
+	            if (err == Error.Ok)
+	            {
+	                var texture = new ImageTexture();
+	                texture.SetImage(image);
+	                return texture;
+	            }
+
+	            GD.PrintErr(\"Failed to load image.\");
+	            return null;
+	        }, cancellationToken);
+
+	        if (!cancellationToken.IsCancellationRequested)
+	        {
+	            tcs.SetResult(resultTexture);
+	        }
+
+	        imageRequest.QueueFree();
+	    };
+
+	    if (imageRequest.Request(url) != Error.Ok)
+	    {
+	        GD.PrintErr(\"Failed to send image request.\");
+	        imageRequest.QueueFree();
+	        return null;
+	    }
+
+	    return await tcs.Task;
+	}
+
+    
+    public static string ConvertDiscordMarkdownToBBCode(string markdownText)
+    {
+	    // Convert Discord-style markdown to BBCode for Godot's RichTextLabel
+
+	    // Bold: **text** -> [b]text[/b]
+	    markdownText = Regex.Replace(markdownText, @\"\\*\\*(.*?)\\*\\*\", \"[b]$1[/b]\");
+        
+	    // Italic: *text* -> [i]text[/i]
+	    markdownText = Regex.Replace(markdownText, @\"\\*(.*?)\\*\", \"[i]$1[/i]\");
+
+	    // Underline: __text__ -> [u]text[/u]
+	    markdownText = Regex.Replace(markdownText, @\"__(.*?)__\", \"[u]$1[/u]\");
+
+	    // Strikethrough: ~~text~~ -> [s]text[/s]
+	    markdownText = Regex.Replace(markdownText, @\"~~(.*?)~~\", \"[s]$1[/s]\");
+
+	    // Inline Code: code -> [code]code[/code]
+	    markdownText = Regex.Replace(markdownText, @\"(.*?)\", \"[code]$1[/code]\");
+
+	    // Links: [text](https://example.com) -> [url=https://example.com]text[/url]
+	    markdownText = Regex.Replace(markdownText, @\"\\[(.*?)\\]\\((https?://[^\\)]+)\\)\", \"[url=$2]$1[/url]\");
+
+	    return markdownText;
+    } // ai gen shit idk wtf it does but it makes discord stuff format into description stuff
+
+    int GetCategoryIdxFromString(string arg)
+    {
+	    if (arg == \"Map\")
+	    {
+		    return 0;
+	    }
+	    else if (arg == \"Deck Graphic\")
+	    {
+		    return 1;
+	    }
+	    else if (arg == \"Griptape\")
+	    {
+		    return 2;
+	    }
+	    else if (arg == \"Trucks\")
+	    {
+		    return 3;
+	    }
+	    else if (arg == \"Wheels\")
+	    {
+		    return 4;
+	    }
+	    else if (arg == \"Shoes\")
+	    {
+		    return 5;
+	    }
+	    else if (arg == \"Object Dropper\")
+	    {
+		    return 6;
+	    }
+	    else if (arg == \"Audio\")
+	    {
+		    return 7;
+	    }
+	    else if (arg == \"Blueprint\")
+	    {
+		    return 8;
+	    }
+	    else if (arg == \"Character\")
+	    {
+		    return 9;
+	    }
+	    else if (arg == \"Clothes\")
+	    {
+		    return 10;
+	    }
+	    else
+	    {
+		    return 11;
+	    }
+	    // very good code
+    }
+    
+    async Task CreateNodes()
+	{
+	    PackedScene ModNode = GD.Load<PackedScene>(\"res://Other/onlineMod.tscn\"); // Load the mod node for instancing
+	    foreach (Dictionary LoadedMods in threadDataList)
+	    {
+	        var ModNodeInstance = ModNode.Instantiate();
+	        ModNodeInstance.Name = (string)LoadedMods[\"name\"];
+	        string AttachedMod = null;
+	        string ModImageLink = null;
+	        bool FirstImageFound = false;
+
+	        foreach (string link in (Array)LoadedMods[\"attachments\"])
+	        {
+	            // Find the position of the query string (if any)
+	            int queryIndex = link.IndexOf('?');
+
+	            // If a query string exists, extract the part before it
+	            string path = queryIndex >= 0 ? link.Substring(0, queryIndex) : link;
+	            GD.Print(path);
+	            // Get the file extension from the path
+	            string fileExtension = Path.GetExtension(path)?.ToLower();
+	            if ((fileExtension == \".jpg\" || fileExtension == \".png\") && !FirstImageFound)
+	            {
+	                ModImageLink = link;
+	                FirstImageFound = true;
+	            }
+	            else if (fileExtension == \".zip\" || fileExtension == \".pak\")
+	            {
+	                AttachedMod = link;
+	                GD.Print(\"Attached Mod Found\");
+	            }
+	            else
+	            {
+	                GD.PrintErr(\"Attached File Not Needed\");
+	            }
+	        }
+	        ModNodeInstance.SetMeta(\"AttachedMod\", AttachedMod);
+	        ModNodeInstance.SetMeta(\"ModImageLink\", ModImageLink);
+
+	        if (ModsList.GetChildCount() < threadDataList.Count)
+	        {
+	            ModsList.AddChild(ModNodeInstance);
+	            Global.CreatedNodes[ModNodeInstance.GetName()] = GetNode(GetPathTo(ModNodeInstance));
+
+	            Label ModNameLabel = ModNodeInstance.FindChild(\"ModName\") as Label;
+	            Label ModAuthorLabel = ModNodeInstance.FindChild(\"ModAuthor\") as Label;
+	            Area2D ClickFixButton = ModNodeInstance.FindChild(\"ClickFix\") as Area2D;
+
+	            ModNameLabel.Text = (string)LoadedMods[\"name\"];
+	            ModAuthorLabel.Text = (string)LoadedMods[\"author\"];
+
+	            ClickFixButton.InputEvent += async (viewport, @event, idx) =>
+	            {
+	                if (@event is InputEventMouseButton mouseEvent && mouseEvent.ButtonIndex == MouseButton.Left && @event.IsPressed())
+	                {
+	                    Global.SelectedOnlineMod = LoadedMods;
+	                    GD.Print(\"2D Click detected\");
+	                    SelectedAttachMod = (string)ModNodeInstance.GetMeta(\"AttachedMod\");
+	                    var descriptionLabel = GetNode<RichTextLabel>(\"Preview/Control/RichTextLabel\");
+	                    var textureRect = GetNode<TextureRect>(\"Preview/Control/TextureRect\");
+	                    descriptionLabel.Text = ConvertDiscordMarkdownToBBCode((string)LoadedMods[\"content\"]);
+	                    GetNode<Label>(\"Preview/Control/TagsLabel\").Text = (string)LoadedMods[\"tags\"];
+	                    textureRect.Texture = await LoadImageFromUrlAsync((string)ModNodeInstance.GetMeta(\"ModImageLink\"));
+	                    
+	                }
+	            };
+	        }
+	    }
+	}
+
+	void _on_download_pressed()
+	{
+		GD.Print(Global.SelectedOnlineMod);
+		GD.Print($\"Attached Mod Link (if found): {SelectedAttachMod}\");
+	}
+    
+    
+}"
+
+[node name="Online" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = SubResource("CSharpScript_jkvh4")
+metadata/_edit_use_anchors_ = true
+
+[node name="Window" type="Window" parent="."]
+title = "Mods List Loading. Please Wait"
+initial_position = 1
+size = Vector2i(445, 180)
+visible = false
+unresizable = true
+always_on_top = true
+keep_title_visible = true
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 2
+offset_left = 6.0
+offset_right = 1031.0
+offset_bottom = 769.0
+color = Color(0.254343, 0.254343, 0.254343, 1)
+
+[node name="ColorRect3" type="ColorRect" parent="."]
+layout_mode = 2
+offset_left = 106.0
+offset_top = 29.0
+offset_right = 543.0
+offset_bottom = 746.0
+color = Color(0.136751, 0.136751, 0.136751, 1)
+
+[node name="ColorRect4" type="ColorRect" parent="."]
+layout_mode = 2
+offset_left = 568.0
+offset_top = 29.0
+offset_right = 1004.0
+offset_bottom = 746.0
+color = Color(0.136751, 0.136751, 0.136751, 1)
+
+[node name="Preview" type="ScrollContainer" parent="."]
+layout_mode = 0
+offset_left = 568.0
+offset_top = 32.0
+offset_right = 1004.0
+offset_bottom = 746.0
+
+[node name="Control" type="Control" parent="Preview"]
+layout_mode = 2
+mouse_filter = 1
+
+[node name="Label2" type="Label" parent="Preview/Control"]
+layout_mode = 2
+offset_right = 94.0
+offset_bottom = 19.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "PREVIEW:"
+label_settings = ExtResource("2_s2okc")
+
+[node name="Label3" type="Label" parent="Preview/Control"]
+layout_mode = 2
+offset_top = 281.0
+offset_right = 94.0
+offset_bottom = 300.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "Description:"
+label_settings = ExtResource("2_s2okc")
+
+[node name="Label4" type="Label" parent="Preview/Control"]
+layout_mode = 2
+offset_top = 262.0
+offset_right = 39.0
+offset_bottom = 281.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "Tags:"
+label_settings = ExtResource("2_s2okc")
+
+[node name="TagsLabel" type="Label" parent="Preview/Control"]
+layout_mode = 2
+offset_left = 41.0
+offset_top = 262.0
+offset_right = 435.0
+offset_bottom = 281.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+label_settings = ExtResource("2_s2okc")
+clip_text = true
+
+[node name="TextureRect" type="TextureRect" parent="Preview/Control"]
+layout_mode = 0
+offset_top = 18.0
+offset_right = 436.0
+offset_bottom = 262.0
+expand_mode = 1
+stretch_mode = 5
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Preview/Control"]
+layout_mode = 0
+offset_top = 301.0
+offset_right = 436.0
+offset_bottom = 713.0
+focus_mode = 2
+bbcode_enabled = true
+fit_content = true
+selection_enabled = true
+structured_text_bidi_override_options = [null, null]
+
+[node name="ModsListControl" type="Control" parent="."]
+layout_mode = 2
+anchors_preset = 0
+offset_left = 106.0
+offset_top = 99.0
+offset_right = 106.0
+offset_bottom = 99.0
+mouse_filter = 1
+
+[node name="Label2" type="Label" parent="ModsListControl"]
+layout_mode = 2
+offset_top = -69.0
+offset_right = 437.0
+offset_bottom = -50.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "    Name                                                          |           Author "
+label_settings = ExtResource("2_s2okc")
+
+[node name="Mods" type="ScrollContainer" parent="ModsListControl"]
+layout_mode = 0
+offset_top = -47.0
+offset_right = 437.0
+offset_bottom = 605.0
+follow_focus = true
+
+[node name="ModsList" type="VBoxContainer" parent="ModsListControl/Mods"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Download" type="Button" parent="."]
+layout_mode = 0
+offset_left = 410.0
+offset_top = 707.0
+offset_right = 540.0
+offset_bottom = 743.0
+text = "Download Mod"
+
+[node name="SideBar" parent="." instance=ExtResource("3_6rkt1")]
+layout_mode = 1
+
+[connection signal="close_requested" from="Window" to="." method="_on_window_close_requested"]
+[connection signal="meta_clicked" from="Preview/Control/RichTextLabel" to="." method="_on_rich_text_label_meta_clicked"]
+[connection signal="pressed" from="Download" to="." method="_on_download_pressed"]

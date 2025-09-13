@@ -1,0 +1,32 @@
+[gd_scene load_steps=2 format=3 uid="uid://jejr1w0w6bpd"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fvcpe"]
+size = Vector2(437, 20)
+
+[node name="Mod" type="Control"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 437.0
+offset_bottom = 20.0
+
+[node name="ModName" type="Label" parent="."]
+layout_mode = 0
+offset_right = 295.0
+offset_bottom = 23.0
+text = "null"
+clip_text = true
+
+[node name="ModAuthor" type="Label" parent="."]
+layout_mode = 0
+offset_left = 300.0
+offset_right = 437.0
+offset_bottom = 23.0
+text = "null"
+clip_text = true
+
+[node name="ClickFix" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ClickFix"]
+position = Vector2(218.5, 10)
+shape = SubResource("RectangleShape2D_fvcpe")

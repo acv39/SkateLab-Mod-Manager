@@ -33,6 +33,11 @@ public partial class FilesScene : Control
 	{
 		GetTree().ChangeSceneToFile("res://Other/Settings.tscn");
 	}
+
+	void _on_online_pressed()
+	{
+		GetTree().ChangeSceneToFile("res://Other/Online.tscn");
+	}
 	
 	void _on_file_dialogmod_files_selected(string[] path) // multiple files
 	{
@@ -170,7 +175,7 @@ public partial class FilesScene : Control
 			string WriteTo = Data + NewFolder + "/";
 			dirAccess.MakeDir(Data + NewFolder);
 			DirAccess.CopyAbsolute(pakpath, WriteTo + NewFolder + "_P.pak");
-			Global.StoreData(NewFolder, NewFolder, null, "Pak Import", WriteTo + NewFolder + "_P.pak", "Misc", true);
+			Global.StoreData(NewFolder, NewFolder, null, "Pak Import", WriteTo + NewFolder + "_P.pak",10, true,1);
 		}
 		Global.SaveData();
 	}
@@ -178,16 +183,17 @@ public partial class FilesScene : Control
 	void ZipExtract(string zippath)
 	{
 		Node autoload = GetNode("/root");
-		string pakpath = Global.ModManagerStorageDirectory;
+		GD.Print($"Pak Path Thang {Global.ModManagerStorageDirectory}");
+		string pakpath = Global.ModManagerStorageDirectory; // where the file data goes
 		string ModDescription = null;
 		string ModSettingsPath = null;
 		string ModImagePath = null;
-		string ModCategory = "9";
+		int ModCategory = 10;
 		string ModName = "Set A Mod Name";
 		string NewFolder = Path.GetFileNameWithoutExtension(zippath);
 		string FolderName = null;
 		bool ModPreview2D = true;
-		string extractPath = Global.ModManagerStorageDirectory + NewFolder;
+		string extractPath = Path.Combine(Global.ModManagerStorageDirectory,NewFolder);
 		Directory.CreateDirectory(extractPath); // make sure the directory exists
 		ZipFile.ExtractToDirectory(zippath, extractPath, true); // Overwrite existing files if they exist. 
 		foreach (string filePath in Directory.GetFiles(extractPath))
@@ -227,11 +233,10 @@ public partial class FilesScene : Control
 			modSettings = fileContents.Split(','); // turn mod settings into an array.
 			ModName = modSettings[0];
 			ModDescription = modSettings[1];
-			ModCategory = modSettings[2];
+			ModCategory = modSettings[2].ToInt();
 			ModPreview2D = Convert.ToBoolean(modSettings[3]);
 		}
-
-		Global.StoreData(NewFolder, ModName, ModImagePath, ModDescription, pakpath, ModCategory, ModPreview2D);
+		Global.StoreData(NewFolder, ModName, ModImagePath, ModDescription, pakpath, ModCategory, ModPreview2D,1);
 		Global.SaveData();
 	}
 	
@@ -239,7 +244,7 @@ public partial class FilesScene : Control
 	{
 		GD.Print($"Mod Folder Directory: {Global.ModsFolderDirectory}");
 		string modPath = Global.ModsFolderDirectory;
-		GetNode<Window>("Window").Popup();
+		GetNode<Window>("Window").Show();
 		foreach (var (key,_value) in Global.LoadedMods) // key is mods
 		{
 			if (((Dictionary)Global.LoadedMods[key])["Toggled"].AsBool() && ((Dictionary)Global.LoadedMods[key])["ModLoadedInGameFiles"].AsBool() == false) // some bullshit way to convert my gdscript to c# lol
@@ -308,6 +313,4 @@ public partial class FilesScene : Control
 		OS.ShellOpen("steam://launch/" + Main.SteamID); // comment this out if not using steam.
 		//OS.Execute(Global.GameDirectory); uncomment this if using non steam, or change the code above for epic games/etc launchers.
 	}
-
-	
 }

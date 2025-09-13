@@ -14,14 +14,14 @@ offset_bottom = 20.0
 layout_mode = 0
 offset_right = 204.0
 offset_bottom = 23.0
-text = "test"
+text = "null"
 
 [node name="ModCategory" type="Label" parent="."]
 layout_mode = 0
 offset_left = 205.0
 offset_right = 342.0
 offset_bottom = 23.0
-text = "shoes"
+text = "null"
 
 [node name="ModToggle" type="CheckButton" parent="."]
 layout_mode = 0

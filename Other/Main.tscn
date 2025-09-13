@@ -1,10 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://cunc4o5epnpkr"]
+[gd_scene load_steps=5 format=3 uid="uid://cunc4o5epnpkr"]
 
-[ext_resource type="Script" path="res://Scripts/Main.cs" id="1_nlsf0"]
-[ext_resource type="Texture2D" uid="uid://m6ovkecaw3aq" path="res://Assets/HomeIco.png" id="2_pj1od"]
-[ext_resource type="Texture2D" uid="uid://5ndpy54bgfyl" path="res://Assets/FIlesIco.png" id="3_q444w"]
+[ext_resource type="Script" uid="uid://b060scbookc44" path="res://Scripts/Main.cs" id="1_nlsf0"]
 [ext_resource type="Texture2D" uid="uid://b7syy5ksit032" path="res://Assets/FileIco2.png" id="4_3vhqj"]
-[ext_resource type="Texture2D" uid="uid://d0cioyg1dmkvf" path="res://Assets/GearIcon.png" id="4_h47mc"]
+[ext_resource type="PackedScene" uid="uid://b6lelpe5ie34h" path="res://Other/SideBar.tscn" id="4_yw44t"]
 [ext_resource type="LabelSettings" uid="uid://bt8ybbniuvfld" path="res://Other/Font.tres" id="5_1rs6q"]
 
 [node name="Main" type="Control"]
@@ -16,6 +14,7 @@ offset_top = 2.0
 offset_bottom = 2.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 script = ExtResource("1_nlsf0")
 metadata/_edit_use_anchors_ = true
 
@@ -35,43 +34,6 @@ offset_right = 1025.0
 offset_bottom = 769.0
 color = Color(0.254343, 0.254343, 0.254343, 1)
 
-[node name="ColorRect2" type="ColorRect" parent="."]
-layout_mode = 2
-offset_right = 88.0
-offset_bottom = 768.0
-color = Color(0.136751, 0.136751, 0.136751, 1)
-
-[node name="Home" type="Button" parent="."]
-layout_mode = 2
-offset_right = 87.0
-offset_bottom = 87.0
-icon = ExtResource("2_pj1od")
-expand_icon = true
-
-[node name="Files" type="Button" parent="."]
-layout_mode = 2
-offset_top = 124.0
-offset_right = 87.0
-offset_bottom = 211.0
-icon = ExtResource("3_q444w")
-expand_icon = true
-
-[node name="ModCreator" type="Button" parent="."]
-layout_mode = 2
-offset_top = 532.0
-offset_right = 87.0
-offset_bottom = 619.0
-icon = ExtResource("4_3vhqj")
-expand_icon = true
-
-[node name="Settings" type="Button" parent="."]
-layout_mode = 2
-offset_top = 643.0
-offset_right = 88.0
-offset_bottom = 731.0
-icon = ExtResource("4_h47mc")
-expand_icon = true
-
 [node name="GameDir" type="Button" parent="."]
 layout_mode = 2
 offset_left = 145.0
@@ -89,12 +51,6 @@ offset_right = 940.0
 offset_bottom = 56.0
 placeholder_text = "SkateLab Game Dir"
 
-[node name="AcceptDialog" type="AcceptDialog" parent="."]
-title = "Please Set Game Directory"
-position = Vector2i(10, 120)
-size = Vector2i(312, 100)
-dialog_text = "Make Sure To Set The Game Directory!"
-
 [node name="Notification" type="Label" parent="."]
 layout_mode = 0
 offset_left = 98.0
@@ -103,9 +59,10 @@ offset_right = 281.0
 offset_bottom = 756.0
 label_settings = ExtResource("5_1rs6q")
 
+[node name="SideBar" parent="." instance=ExtResource("4_yw44t")]
+layout_mode = 1
+offset_top = -4.0
+offset_bottom = -4.0
+
 [connection signal="file_selected" from="FileDialog" to="." method="_on_file_dialog_file_selected"]
-[connection signal="pressed" from="Home" to="." method="_on_home_pressed"]
-[connection signal="pressed" from="Files" to="." method="_on_files_pressed"]
-[connection signal="pressed" from="ModCreator" to="." method="_on_mod_creator_pressed"]
-[connection signal="pressed" from="Settings" to="." method="_on_settings_pressed"]
 [connection signal="pressed" from="GameDir" to="." method="_on_game_dir_pressed"]

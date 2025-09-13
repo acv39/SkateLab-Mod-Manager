@@ -1,0 +1,75 @@
+[gd_scene load_steps=6 format=3 uid="uid://b6lelpe5ie34h"]
+
+[ext_resource type="Script" uid="uid://c7ptr1qief3q8" path="res://Scripts/SideBar.cs" id="1_l5dph"]
+[ext_resource type="Texture2D" uid="uid://m6ovkecaw3aq" path="res://Assets/HomeIco.png" id="2_81sjh"]
+[ext_resource type="Texture2D" uid="uid://5ndpy54bgfyl" path="res://Assets/FIlesIco.png" id="3_hxmqb"]
+[ext_resource type="Texture2D" uid="uid://b7syy5ksit032" path="res://Assets/FileIco2.png" id="4_ughuh"]
+[ext_resource type="Texture2D" uid="uid://d0cioyg1dmkvf" path="res://Assets/GearIcon.png" id="5_mcm85"]
+
+[node name="SideBar" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -933.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("1_l5dph")
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 88.0
+offset_bottom = 768.0
+color = Color(0.136751, 0.136751, 0.136751, 1)
+
+[node name="Home" type="Button" parent="."]
+layout_mode = 0
+offset_right = 87.0
+offset_bottom = 87.0
+icon = ExtResource("2_81sjh")
+expand_icon = true
+
+[node name="Files" type="Button" parent="."]
+layout_mode = 0
+offset_top = 124.0
+offset_right = 87.0
+offset_bottom = 211.0
+icon = ExtResource("3_hxmqb")
+expand_icon = true
+
+[node name="ModCreator" type="Button" parent="."]
+layout_mode = 0
+offset_top = 532.0
+offset_right = 87.0
+offset_bottom = 619.0
+icon = ExtResource("4_ughuh")
+expand_icon = true
+
+[node name="Settings" type="Button" parent="."]
+layout_mode = 0
+offset_top = 643.0
+offset_right = 88.0
+offset_bottom = 731.0
+icon = ExtResource("5_mcm85")
+expand_icon = true
+
+[node name="AcceptDialog" type="AcceptDialog" parent="."]
+auto_translate_mode = 1
+title = "Please Set Game Directory"
+position = Vector2i(10, 120)
+size = Vector2i(312, 100)
+dialog_text = "Make Sure To Set The Game Directory!"
+
+[node name="Print All Global" type="Button" parent="."]
+visible = false
+offset_top = 475.0
+offset_right = 162.0
+offset_bottom = 506.0
+text = "Print All Global Vars"
+
+[connection signal="pressed" from="Home" to="." method="_on_home_pressed"]
+[connection signal="pressed" from="Files" to="." method="_on_files_pressed"]
+[connection signal="pressed" from="ModCreator" to="." method="_on_mod_creator_pressed"]
+[connection signal="pressed" from="Settings" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="Print All Global" to="." method="_on_print_all_global_pressed"]

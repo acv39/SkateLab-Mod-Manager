@@ -24,6 +24,15 @@ public partial class Settings : Control
 
 	}
 	
+	void _on_online_pressed()
+	{
+		if(Global.GameDirectoryIsSet == true){
+			GetTree().ChangeSceneToFile("res://Other/Online.tscn");
+		}else{
+			GetNode<AcceptDialog>("AcceptDialog").Popup();
+		}
+	}
+	
 	void _on_mod_creator_pressed()
 	{
 		GetTree().ChangeSceneToFile("res://Other/ModCreator.tscn");

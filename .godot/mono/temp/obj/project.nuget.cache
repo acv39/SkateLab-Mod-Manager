@@ -1,16 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "kDBmgPk29Oo=",
+  "dgSpecHash": "XEgFT8fDevA=",
   "success": true,
   "projectFilePath": "B:\\Godot\\Mod Manager Sharp\\skatelab-mod-manager\\SkateLab Mod Manager.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\sstaf\\.nuget\\packages\\godot.sourcegenerators\\4.3.0\\godot.sourcegenerators.4.3.0.nupkg.sha512",
-    "C:\\Users\\sstaf\\.nuget\\packages\\godotsharp\\4.3.0\\godotsharp.4.3.0.nupkg.sha512",
-    "C:\\Users\\sstaf\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.36\\microsoft.netcore.app.ref.6.0.36.nupkg.sha512",
-    "C:\\Users\\sstaf\\.nuget\\packages\\microsoft.netcore.app.runtime.linux-x64\\6.0.36\\microsoft.netcore.app.runtime.linux-x64.6.0.36.nupkg.sha512",
-    "C:\\Users\\sstaf\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.36\\microsoft.windowsdesktop.app.ref.6.0.36.nupkg.sha512",
-    "C:\\Users\\sstaf\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.36\\microsoft.aspnetcore.app.ref.6.0.36.nupkg.sha512",
-    "C:\\Users\\sstaf\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.linux-x64\\6.0.36\\microsoft.aspnetcore.app.runtime.linux-x64.6.0.36.nupkg.sha512"
+    "C:\\Users\\sstaf\\.nuget\\packages\\godot.sourcegenerators\\4.4.1\\godot.sourcegenerators.4.4.1.nupkg.sha512",
+    "C:\\Users\\sstaf\\.nuget\\packages\\godotsharp\\4.4.1\\godotsharp.4.4.1.nupkg.sha512",
+    "C:\\Users\\sstaf\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\8.0.11\\microsoft.netcore.app.runtime.win-x64.8.0.11.nupkg.sha512",
+    "C:\\Users\\sstaf\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x64\\8.0.11\\microsoft.windowsdesktop.app.runtime.win-x64.8.0.11.nupkg.sha512",
+    "C:\\Users\\sstaf\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x64\\8.0.11\\microsoft.aspnetcore.app.runtime.win-x64.8.0.11.nupkg.sha512"
   ],
   "logs": []
 }
